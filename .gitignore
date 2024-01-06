@@ -12,3 +12,5 @@ Zero-shot_Learning/datasets
 */.DS_Store
 *.pdf
 *.npy
+all_datasets
+timesnet_all_datasets.zip
