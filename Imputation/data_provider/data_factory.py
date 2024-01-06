@@ -2,6 +2,17 @@ from data_provider.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Data
     MSLSegLoader, SMAPSegLoader, SMDSegLoader, SWATSegLoader, UEAloader
 from data_provider.uea import collate_fn
 from torch.utils.data import DataLoader
+import logging
+import colorlog
+
+fmt = "{asctime} {log_color}{levelname} {name}: {message}"
+colorlog.basicConfig(style="{", format=fmt, stream=None)
+# logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s",stream=None)
+log = logging.getLogger(name="test")
+
+# 放到main使用
+log.setLevel(logging.DEBUG)
+# logging配置详解： https://zhuanlan.zhihu.com/p/166671955
 
 data_dict = {
     'ETTh1': Dataset_ETT_hour,
@@ -84,6 +95,7 @@ def data_provider(args, flag):
             freq=freq,
             seasonal_patterns=args.seasonal_patterns
         )
+        log.debug(f"flag:{flag},root_path:{args.root_path},data_path:{args.data_path},size:{[args.seq_len, args.label_len, args.pred_len]},features:{args.features},target:{args.target},timeenc:{timeenc},percent:{percent},freq:{freq},seasonal_patterns:{args.seasonal_patterns}")
         batch_size = args.batch_size
         print(flag, len(data_set))
         data_loader = DataLoader(
